@@ -9,5 +9,6 @@
 		<typeAlias type="com.om.board.qna.QnaDTO" alias="QnaDTO"/>
 		<typeAlias type="com.om.board.BoardDTO" alias="BoardDTO"/>
 		<typeAlias type="com.om.util.Pager" alias="Pager"/>
+		<typeAlias type="com.om.member.MemberDTO" alias="MemberDTO"/>
 	</typeAliases>
 </configuration>

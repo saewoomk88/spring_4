@@ -14,5 +14,8 @@
 <a href="./notice/noticeList?curPage=1">noticeList</a>
 <hr>
 <a href="./qna/qnaList">qnaList</a>
+<hr>
+<a href="./member/memberJoin">memberJoin</a>
+<a href="./member/memberLogin">LOGIN</a>
 </body>
 </html>
