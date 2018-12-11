@@ -3,8 +3,11 @@ package com.om.board.notice;
 import java.sql.Date;
 
 import com.om.board.BoardDTO;
+import com.om.file.FileDTO;
 
 public class NoticeDTO extends BoardDTO{
+	
+	
 
 	@Override
 	public int getNum() {

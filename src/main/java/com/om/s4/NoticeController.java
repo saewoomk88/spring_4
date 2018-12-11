@@ -68,6 +68,7 @@ public class NoticeController {
 		System.out.println(realPath);
 		
 		int result = noticeService.insert(boardDTO, f1, session);
+
 		
 		mv.addObject("board", "notice")
 		.setViewName("redirect:./noticeList");

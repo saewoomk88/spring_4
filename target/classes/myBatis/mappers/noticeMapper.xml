@@ -31,8 +31,11 @@
 		delete notice where num=#{num}
 	</delete>
 	
-	<insert id="ins" parameterType="com.om.board.notice.NoticeDTO">
-		insert into notice values(#{num}, #{title}, #{writer}, #{contents}, sysdate, 0)
+	<insert id="ins" parameterType="java.util.Map">
+		<selectKey keyProperty="num" resultType="int" order="BEFORE">
+			select notice_seq.nextval from dual
+		</selectKey>
+		insert into notice values(#{num}, #{noticeDTO.title}, #{noticeDTO.writer}, #{noticeDTO.contents}, sysdate, 0)
 	</insert>
 	
 	<update id="update" parameterType="com.om.board.notice.NoticeDTO">

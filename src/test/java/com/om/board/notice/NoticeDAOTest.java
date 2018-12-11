@@ -2,7 +2,9 @@ package com.om.board.notice;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -23,73 +25,17 @@ public class NoticeDAOTest extends AbstractTestCase{
 	@Inject
 	private SqlSession sql;
 	
-	@BeforeClass
-	public static void start() {
-		System.out.println("start test");
-	}
-	
-	@AfterClass
-	public static void finish() {
-		System.out.println("finish test");
-	}
-	
-	@Before
-	public void before() {
-		System.out.println("Before test");
-	}
-	@After
-	public void after() {
-		System.out.println("after test");
-	}
-	
 	@Test
-	public void test() {
-		assertNotNull(sql);
-	}
-	
-	
-	
-	public void insert() {
-		BoardDTO boardDTO = new BoardDTO();
-		boardDTO.setTitle("t2");
-		boardDTO.setWriter("w2");
-		boardDTO.setContents("c2");
-		
-		try {
-			int result = noticeDAO.insert(boardDTO);
-			assertNotEquals(0, result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	//@Test
-	public void update() {
-		BoardDTO boardDTO = new BoardDTO();
-		boardDTO.setTitle("t2222");
-		boardDTO.setContents("c2");
-		boardDTO.setNum(2);
-		
-		try {
-			int result = noticeDAO.update(boardDTO);
-			assertNotEquals(0, result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	//@Test
-	public void del() {
-		try {
-			int result = noticeDAO.delete(3);
-			assertEquals(1, result);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public void test() throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		NoticeDTO noticeDTO = new NoticeDTO();
+		noticeDTO.setTitle("test");
+		noticeDTO.setWriter("test");
+		noticeDTO.setContents("tttttt");
+		map.put("noticeDTO", new NoticeDTO());
+		map.put("num", 0);
+		noticeDAO.test(map);
+		System.out.println(map.get("num"));
 	}
 
 }
