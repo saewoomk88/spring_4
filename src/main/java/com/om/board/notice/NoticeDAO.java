@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.om.board.BoardDAO;
@@ -15,6 +18,14 @@ import com.om.util.Pager;
 
 @Repository
 public class NoticeDAO implements BoardDAO {
+	
+	@Inject
+	private SqlSession sqlSession;
+	private static final String NAMESPACE="noticeMapper.";
+	
+	public int getNum() throws Exception{
+		return sqlSession.selectOne(NAMESPACE+"getNum");
+	}
 	
 
 	@Override
@@ -32,94 +43,35 @@ public class NoticeDAO implements BoardDAO {
 
 	@Override
 	public List<BoardDTO> list(Pager pager) throws Exception {
-		Connection con = DBConnector.getConnect();
-		String sql = "select * from "
-				+ "(select rownum R, N.* from "
-				+ "(select * from notice "
-				+ "where "+pager.getKind()+" like ? "
-						+ "order by num desc) N) "
-						+ "where R between ? and ?";
-		PreparedStatement st = con.prepareStatement(sql);
-		st.setString(1, "%"+pager.getSearch()+"%");
-		st.setInt(2, pager.getStartRow());
-		st.setInt(3, pager.getLastRow());
-		ResultSet rs = st.executeQuery();
-		List<BoardDTO> ar = new ArrayList<BoardDTO>();
-		while(rs.next()) {
-			NoticeDTO noticeDTO = new NoticeDTO();
-			noticeDTO.setNum(rs.getInt("num"));
-			noticeDTO.setTitle(rs.getString("title"));
-			noticeDTO.setWriter(rs.getString("writer"));
-			noticeDTO.setContents(rs.getString("contents"));
-			noticeDTO.setReg_date(rs.getDate("reg_date"));
-			noticeDTO.setHit(rs.getInt("hit"));
-			ar.add(noticeDTO);
-		}
-		DBConnector.disConnect(rs, st, con);
-		return ar;
+		
+		return sqlSession.selectList(NAMESPACE+"list", pager);
 	}
 
 	@Override
 	public BoardDTO select(int num) throws Exception {
-		Connection con = DBConnector.getConnect();
-		String sql = "select * from notice where num=?";
-		PreparedStatement st = con.prepareStatement(sql);
-		st.setInt(1, num);
-		ResultSet rs = st.executeQuery();
-		NoticeDTO noticeDTO = null;
-		if(rs.next()) {
-			noticeDTO= new NoticeDTO();
-			noticeDTO.setNum(rs.getInt("num"));
-			noticeDTO.setTitle(rs.getString("title"));
-			noticeDTO.setWriter(rs.getString("writer"));
-			noticeDTO.setContents(rs.getString("contents"));
-			noticeDTO.setReg_date(rs.getDate("reg_date"));
-			noticeDTO.setHit(rs.getInt("hit"));
-		}
-		DBConnector.disConnect(rs, st, con);
 		
-		return noticeDTO;
+		return sqlSession.selectOne(NAMESPACE+"select", num);
 	}
 	
 	
 
 	@Override
 	public int insert(BoardDTO boardDTO) throws Exception {
-		Connection con = DBConnector.getConnect();
-		String sql = "insert into notice values(notice_seq.nextval,?,?,?,sysdate,0)";
-		PreparedStatement st = con.prepareStatement(sql);
-		st.setString(1, boardDTO.getTitle());
-		st.setString(2, boardDTO.getWriter());
-		st.setString(3, boardDTO.getContents());
-		int result = st.executeUpdate();
-		DBConnector.disConnect(st, con);
 		
-		return result;
+		
+		return sqlSession.insert(NAMESPACE+"ins", boardDTO);
 	}
 
 	@Override
 	public int update(BoardDTO boardDTO) throws Exception {
-		Connection con = DBConnector.getConnect();
-		String sql = "update notice set title=?, contents=? where num=?";
-		PreparedStatement st = con.prepareStatement(sql);
-		st.setString(1, boardDTO.getTitle());
-		st.setString(2, boardDTO.getContents());
-		st.setInt(3, boardDTO.getNum());
-		int result = st.executeUpdate();
-		DBConnector.disConnect(st, con);
 		
-		return result;
+		return sqlSession.update(NAMESPACE+"update", boardDTO);
 	}
 
 	@Override
 	public int delete(int num) throws Exception {
-		Connection con = DBConnector.getConnect();
-		String sql = "delete notice where num=?";
-		PreparedStatement st = con.prepareStatement(sql);
-		st.setInt(1, num);
-		int result = st.executeUpdate();
-		DBConnector.disConnect(st, con);
-		return result;
+		
+		return sqlSession.delete(NAMESPACE+"del", num);
 	}
 
 }

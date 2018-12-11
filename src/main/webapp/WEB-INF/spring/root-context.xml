@@ -25,5 +25,12 @@
 	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
 		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
 	</bean>
+	
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+		<!-- 파일의 총 크기 maxUploadSize -->
+		<!-- 파일 하나의 크기 -->
+		<property name="maxUploadSizePerFile" value="10485760"></property>
+		<property name="defaultEncoding" value="UTF-8"></property>
+	</bean>
 		
 </beans>

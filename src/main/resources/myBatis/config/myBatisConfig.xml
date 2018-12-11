@@ -10,5 +10,6 @@
 		<typeAlias type="com.om.board.BoardDTO" alias="BoardDTO"/>
 		<typeAlias type="com.om.util.Pager" alias="Pager"/>
 		<typeAlias type="com.om.member.MemberDTO" alias="MemberDTO"/>
+		<typeAlias type="com.om.file.FileDTO" alias="FileDTO"/>
 	</typeAliases>
 </configuration>

@@ -17,7 +17,7 @@
 </head>
 <body>
 
-	<form action="./memberLogin" method="post">
+	<form action="./login" method="post">
 		<div>ID :<input type="text" name="id"></div>
 		<div>PW :<input type="password" name="pw"></div>
 		

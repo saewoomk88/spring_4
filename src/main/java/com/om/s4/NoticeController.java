@@ -3,16 +3,20 @@ package com.om.s4;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.om.board.BoardDTO;
 import com.om.board.notice.NoticeDTO;
 import com.om.board.notice.NoticeService;
+import com.om.util.FileSaver;
 import com.om.util.Pager;
 
 @Controller
@@ -36,13 +40,13 @@ public class NoticeController {
 	}
 	
 	@RequestMapping(value="noticeSelect")
-	public ModelAndView noticeSelect(int num) throws Exception{
+	public String noticeSelect(int num, Model model, RedirectAttributes rd) throws Exception{
 		ModelAndView mv = new ModelAndView();
-		BoardDTO boardDTO =noticeService.select(num);
-		mv.addObject("dto", boardDTO)
-		.addObject("board", "notice")
-		.setViewName("board/boardSelect");
-		return mv;
+		String path =noticeService.select(num, model, rd);
+		//mv.addObject("dto", boardDTO)
+		//.addObject("board", "notice")
+		//.setViewName("board/boardSelect");
+		return path;
 	}
 	
 	//Insert
@@ -58,13 +62,12 @@ public class NoticeController {
 	
 	
 	@RequestMapping(value="noticeWrite", method=RequestMethod.POST)
-	public ModelAndView noticeWrite2(BoardDTO boardDTO, RedirectAttributes rd)  throws Exception{
+	public ModelAndView noticeWrite2(BoardDTO boardDTO, HttpSession session, MultipartFile [] f1, RedirectAttributes rd)  throws Exception{
 		ModelAndView mv = new ModelAndView();
-		int result = noticeService.insert(boardDTO);
+		String realPath = session.getServletContext().getRealPath("/resources/upload");
+		System.out.println(realPath);
 		
-		if(result<1) {
-			rd.addFlashAttribute("msg", "Insert Fail");
-		}
+		int result = noticeService.insert(boardDTO, f1, session);
 		
 		mv.addObject("board", "notice")
 		.setViewName("redirect:./noticeList");

@@ -28,12 +28,5 @@ public class MemberTest extends AbstractTestCase {
 		assertEquals(1, result);
 	}
 	
-	@Test
-	public void test1() throws Exception{
 	
-		MemberDTO memberDTO=memberDAO.login("master", "123");
-		
-		assertNotNull(memberDTO);
-	}
-
 }
